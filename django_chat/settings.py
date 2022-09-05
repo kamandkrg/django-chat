@@ -70,7 +70,7 @@ TEMPLATES = [
 ]
 
 # WSGI_APPLICATION = 'django_chat.wsgi.application'
-ASGI_APPLICATION = "myproject.asgi.application"
+ASGI_APPLICATION = "django_chat.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
