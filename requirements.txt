@@ -1,4 +1,6 @@
+aioredis==1.3.1
 asgiref==3.5.2
+async-timeout==4.0.2
 attrs==22.1.0
 autobahn==22.7.1
 Automat==20.2.0
@@ -8,9 +10,11 @@ constantly==15.1.0
 cryptography==37.0.4
 daphne==3.0.2
 Django==3.2
+hiredis==2.0.0
 hyperlink==21.0.0
 idna==3.3
 incremental==21.3.0
+msgpack==1.0.4
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.21
