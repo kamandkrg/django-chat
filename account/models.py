@@ -20,6 +20,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     phone = PhoneNumberField(max_length=15, unique=True)
     username = models.CharField(unique=True, max_length=32)
+    image = models.ImageField(null=True)
+    bio = models.TextField(null=True, blank=True)
     online = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     age = models.PositiveIntegerField(blank=True, null=True)
