@@ -15,7 +15,7 @@ def sing_up(request):
         return redirect('register')
     else:
         form = UserRegisterForm()
-        return render(request, 'home/register.html', context={'form': form})
+        return render(request, 'account/register.html', context={'form': form})
 
 
 @login_required
@@ -38,7 +38,7 @@ def login_user(request):
         return redirect('login')
     else:
         form = UserLoginForm()
-        return render(request, 'home/login.html', {'form': form})
+        return render(request, 'account/login.html', {'form': form})
 
 
 

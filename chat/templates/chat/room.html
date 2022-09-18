@@ -10,16 +10,17 @@
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
-    {{ room_name|json_script:"room-name" }}
-    <script src='{% static /chat/js/reconnecting-websocket.js %}'></script>
+    {{ username|json_script:"username" }}
+    <script src="{% static 'chat/js/reconnecting-websocket.js' %}"></script>
     <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        var username = {{ username }};
+        const roomName = JSON.parse(document.getElementById('username').textContent);
 
         const chatSocket = new ReconnectingWebSocket(
             'ws://'
             + window.location.host
             + '/ws/chat/'
-            + roomName
+            + '+' + username
             + '/'
         );
 

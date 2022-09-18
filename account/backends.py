@@ -10,8 +10,7 @@ import phonenumbers
 class MyBackend(BaseBackend):
 
     def authenticate(self, request, username=None, password=None):
-        number = phonenumbers.parse(username, None)
-        if phonenumbers.is_valid_number(number):
+        if phonenumbers.is_alpha_number(username):
             user = get_object_or_404(User, phone=username)
         elif "@" in username:
             user = get_object_or_404(User, email=username)

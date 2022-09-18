@@ -12,7 +12,6 @@ class UserLoginForm(forms.Form):
     username = forms.CharField(label='username', widget=forms.TextInput(attrs={'class': 'e-field-inner'}))
 
     def save(self, commit=True):
-        print(111111111111111111)
         # Save the provided password in hashed format
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
@@ -24,24 +23,17 @@ class UserLoginForm(forms.Form):
 class UserRegisterForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-    username = forms.CharField(validators=[username_validate])
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'phone', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active',
-                  'sex', 'age')
+        fields = ('username', 'phone')
 
     def __init__(self, *args, **kwargs):
         super(UserRegisterForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'e-field-inner'})
-        self.fields['email'].widget.attrs.update({'class': 'e-field-inner'})
-        self.fields['phone'].widget.attrs.update({'class': 'e-field-inner'})
-        self.fields['first_name'].widget.attrs.update({'class': 'e-field-inner'})
-        self.fields['last_name'].widget.attrs.update({'class': 'e-field-inner'})
-        self.fields['age'].widget.attrs.update({'class': 'e-field-inner'})
-        self.fields['sex'].widget.attrs.update({'class': 'e-field-inner'})
-        self.fields['password1'].widget.attrs.update({'class': 'e-field-inner'})
-        self.fields['password2'].widget.attrs.update({'class': 'e-field-inner'})
+        self.fields['username'].widget.attrs.update({'placeholder': "Your UserName"})
+        self.fields['phone'].widget.attrs.update({'placeholder': "Your Phone"})
+        self.fields['password1'].widget.attrs.update({'placeholder': "Password"})
+        self.fields['password2'].widget.attrs.update({'placeholder': "Repeat your password"})
 
     def clean_password2(self):
         # Check that the two password entries match
