@@ -1,27 +1,35 @@
-from djongo import models
+from account.models import User
+from django.db import models
+
+
+class StatusMessage(models.Model):
+    STATUS_CHOICE = (
+        (0, 'not delivered'),
+        (1, 'delivered'),
+        (2, 'seen')
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='status_messages')
+    status = models.IntegerField(choices=STATUS_CHOICE, default=0)
+
+
+class PinChat(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pins')
+    status = models.BooleanField(default=False)
 
 
 class PrivateChatRoom(models.Model):
-    user1 = models.CharField(max_length=64)
-    user2 = models.CharField(max_length=64, unique=True)
-    stare = models.BooleanField(default=False)
-    created_time = models.DateTimeField(auto_now=True)
-    modify_time = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.pk}"
+    user1 = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='private_room_sender')
+    user2 = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, related_name='private_room_receiver')
+    pin = models.ForeignKey(PinChat, on_delete=models.SET_NULL, null=True, related_name='chats')
+    created_time = models.DateTimeField(auto_now_add=True)
+    modify_time = models.DateTimeField(auto_now=True)
 
 
 class Message(models.Model):
-    auther = models.CharField(max_length=64)
+
+    auther = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
     text = models.TextField()
-    Reply = models.ArrayReferenceField("self", on_delete=models.CASCADE, null=True, blank=True)
-    created_time = models.DateTimeField(auto_now=True)
-    room = models.ArrayReferenceField(to=PrivateChatRoom, on_delete=models.CASCADE, related_name='messages')
-    modify_time = models.DateTimeField(auto_now_add=True)
-    unread = models.BooleanField(default=False)
-
-
-
-
-
+    room = models.ForeignKey(PrivateChatRoom, on_delete=models.CASCADE, related_name='messages')
+    status = models.ForeignKey(StatusMessage, on_delete=models.CASCADE, related_name='messages', null=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    modify_time = models.DateTimeField(auto_now=True)
