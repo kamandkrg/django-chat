@@ -1,22 +1,36 @@
 import json
 
-from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 from channels.exceptions import StopConsumer
 from channels.generic.websocket import AsyncConsumer
-from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-
 from account.models import User
 from chat.models import PrivateChatRoom, Message, StatusMessage
 
 
 class ApplicationConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
+        self.user = self.scope['user']
+        if self.user.is_anonymous:
+            await self.send(
+                {'type': 'websocket.close'}
+            )
+
+        await self.channel_layer.group_add(
+            self.user.username,
+            self.channel_name
+        )
         await self.send(
             {'type': 'websocket.accept'}
         )
+
+    async def websocket_disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.user.username,
+            self.channel_name
+        )
+        raise StopConsumer()
 
 
 class ChatConsumer(AsyncConsumer):
