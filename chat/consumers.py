@@ -12,6 +12,13 @@ from account.models import User
 from chat.models import PrivateChatRoom, Message, StatusMessage
 
 
+class ApplicationConsumer(AsyncConsumer):
+    async def websocket_connect(self, event):
+        await self.send(
+            {'type': 'websocket.accept'}
+        )
+
+
 class ChatConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
@@ -40,7 +47,6 @@ class ChatConsumer(AsyncConsumer):
         bytes_data = event.get('bytes', None)
 
         if text_data is not None:
-            print(text_data, 222222222222222222)
             text_data_json = json.loads(text_data)
             text = text_data_json['text']
             user = self.scope['user']
@@ -69,6 +75,7 @@ class ChatConsumer(AsyncConsumer):
     def create_message(self, text):
         room = get_object_or_404(PrivateChatRoom, pk=self.chat.pk)
         message = Message.objects.create(auther=self.scope['user'], text=text, room=room)
+        return message
 
     @database_sync_to_async
     def get_chat(self, user, user2):

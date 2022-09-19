@@ -38,6 +38,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return str(self.pk)
 
+    def change_connection(self):
+        self.online = not self.online
+        return self.online
+
 
 
 

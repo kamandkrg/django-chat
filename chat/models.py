@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from account.models import User
 from django.db import models
 
@@ -23,6 +25,9 @@ class PrivateChatRoom(models.Model):
     pin = models.ForeignKey(PinChat, on_delete=models.SET_NULL, null=True, related_name='chats')
     created_time = models.DateTimeField(auto_now_add=True)
     modify_time = models.DateTimeField(auto_now=True)
+
+    def get_messages(self):
+        return self.messages.all()
 
 
 class Message(models.Model):
