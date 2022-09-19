@@ -85,23 +85,13 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('localhost', 6379)],
+            "hosts": [(os.environ.get('REDIS_LOCATION', 'localhost'), 6379)]
         },
     },
 }
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-#
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'chat-online',
-#         'CLIENT': {
-#            'host': 'localhost',
-#         }
-#     }
-# }
 
 DATABASES = {
     'default': {

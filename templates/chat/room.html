@@ -15,7 +15,7 @@
           </div>
           <div class="card-body" id="messages-list" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
           {% for mes in room.messages.all %}
-            {% if mes.auther == request.user.username %}
+            {% if mes.auther.username == request.user.username %}
             <div class="d-flex flex-row justify-content-start">
               <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
                 alt="avatar 1" style="width: 45px; height: 100%;">
@@ -42,20 +42,16 @@
 
           </div>
           <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-            <form action="{% url 'room' username %}" method="post">
-            {% csrf_token %}
             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
               alt="avatar 3" style="width: 40px; height: 100%;">
             <input type="text" class="form-control form-control-lg" id="msg-input"
               placeholder="Type message" name="message">
-              <input type="hidden" name="room_id" value="{{ room.pk }}">
             <button type="submit" id="send-msg">
               send
             </button>
             <a class="ms-1 text-muted" href="#!"><i class="fas fa-paperclip"></i></a>
             <a class="ms-3 text-muted" href="#!"><i class="fas fa-smile"></i></a>
             <a class="ms-3" href="#!"><i class="fas fa-paper-plane"></i></a>
-            </form>
           </div>
         </div>
 
@@ -116,11 +112,13 @@
         var message = messageInputDom.value;
 
         msgdiv.append(`
-            <div class="media">
-                <div class="media-body">
-                    <h6 class="my-0 text-success"><strong>You</strong></h6>
-                    <p>MESSAGE</p>
-                </div>
+            <div class="d-flex flex-row justify-content-start">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                alt="avatar 1" style="width: 45px; height: 100%;">
+              <div>
+                <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">MESSAGE</p>
+                <p class="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
+              </div>
             </div>
         `.replace('MESSAGE', message));
 

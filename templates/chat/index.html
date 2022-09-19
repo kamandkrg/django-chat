@@ -37,10 +37,10 @@
 				<ul>
 					{% for room in rooms %}
 					<li>
-						{% if request.user.username == room.user1 %}
-							<a href="{% url 'room' room.user2 %}">
+						{% if request.user.username == room.user1.username %}
+							<a href="{% url 'room' room.user2.username %}">
 						{% else %}
-							<a href="{% url 'room' room.user1 %}">
+							<a href="{% url 'room' room.user1.username %}">
 						{% endif %}
 
 							<div class="message-avatar">
@@ -48,10 +48,10 @@
 							</div>
 							<div class="message-body">
 								<div class="message-body-heading">
-									{% if request.user.username == room.user1 %}
-									<h5>{{ room.user2 }} <span class="unread">Unread</span></h5>
+									{% if request.user.username == room.user1.username %}
+									<h5>{{ room.user2.username }} <span class="unread">Unread</span></h5>
 									{% else %}
-									<h5>{{ room.user1 }} <span class="unread">Unread</span></h5>
+									<h5>{{ room.user1.username }} <span class="unread">Unread</span></h5>
 									{% endif %}
 									<span>7 hours ago</span>
 								</div>

@@ -13,23 +13,16 @@ from chat.models import PrivateChatRoom, Message
 
 @login_required
 def room_list(request):
-    user = request.user.username
+    user = get_object_or_404(User, username=request.user.username)
     rooms = PrivateChatRoom.objects.filter(Q(user1=user) | Q(user2=user))
-    room = get_object_or_404(PrivateChatRoom, pk=1)
-    Message.objects.create(room_id=room, auther=request.user, text='hi kamand')
     return render(request, 'chat/index.html', {'rooms': rooms})
 
 
 def room(request, username):
-    # if request.method == 'POST':
-    #     room_id = request.POST.get('room_id')
-    #     private_room = get_object_or_404(PrivateChatRoom, pk=room_id)
-    #     message = request.POST.get('message')
-    #     Message.objects.create(room=private_room, text=message, auther=request.user.username)
-    #     return redirect('room')
-    username1 = request.user.username
+    username2 = get_object_or_404(User, username=username)
+    username1 = get_object_or_404(User, username=request.user.username)
     room_private = PrivateChatRoom.objects.filter(
-        Q(user1=username) | Q(user2=username),  Q(user1=username1) | Q(user2=username1)
+        Q(user1=username2) | Q(user2=username2),  Q(user1=username1) | Q(user2=username1)
     )
 
     if room_private.exists():
@@ -41,15 +34,14 @@ def room(request, username):
 @login_required
 @require_http_methods(['POST'])
 def create_room(request):
-    username = request.POST.get('username')
-    get_object_or_404(User, username=username)
-    username1 = request.user.username
-    room = PrivateChatRoom.objects.filter(
+    user1 = request.POST.get('username')
+    username = get_object_or_404(User, username=user1)
+    username1 = get_object_or_404(User, username=request.user.username)
+    pv_room = PrivateChatRoom.objects.filter(
         Q(user1=username) | Q(user2=username),  Q(user1=username1) | Q(user2=username1)
     )
-    if room.exists():
-        return redirect('room_list')
-    PrivateChatRoom.objects.create(user1=username1, user2=username, message=[])
+    if not pv_room.exists():
+        PrivateChatRoom.objects.create(user1=username1, user2=username)
     return redirect('room_list')
 
 
