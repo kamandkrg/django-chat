@@ -33,8 +33,9 @@ class PrivateChatRoom(models.Model):
 class Message(models.Model):
 
     auther = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
+    reply_from = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='parent')
     text = models.TextField()
     room = models.ForeignKey(PrivateChatRoom, on_delete=models.CASCADE, related_name='messages')
-    status = models.ForeignKey(StatusMessage, on_delete=models.CASCADE, related_name='messages', null=True)
+    status = models.ForeignKey(StatusMessage, on_delete=models.CASCADE, related_name='messages', null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modify_time = models.DateTimeField(auto_now=True)

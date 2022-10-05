@@ -6,7 +6,7 @@ from channels.generic.websocket import AsyncConsumer
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from account.models import User
-from chat.models import PrivateChatRoom, Message, StatusMessage
+from chat.models import PrivateChatRoom, Message
 
 
 class ApplicationConsumer(AsyncConsumer):
